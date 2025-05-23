@@ -1,0 +1,24 @@
+name: CD DevOps 2025
+
+on:
+  workflow_run:
+    workflows: ["CI devops 2025"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Déploiement distant via SSH + Ansible
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
+          chmod 600 id_rsa
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
+            cd ~/ansible && git pull origin main && ansible-playbook -i inventories/setup.yml install.yml
+          "
