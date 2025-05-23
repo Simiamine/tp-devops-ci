@@ -15,9 +15,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Déploiement distant via SSH + Ansible
+      - name: Deploy with Ansible
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
+          echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
           ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
             cd ~/ansible && git pull origin main && ansible-playbook -i inventories/setup.yml install.yml
