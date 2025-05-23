@@ -43,7 +43,9 @@ jobs:
         with:
           context: ./simple-api
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-simple-api:${{ github.run_number }}-${{ github.run_id }}
 
       - name: Build and push database
         uses: docker/build-push-action@v6
