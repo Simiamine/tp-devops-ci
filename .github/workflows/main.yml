@@ -52,11 +52,15 @@ jobs:
         with:
           context: ./database
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-database:${{ github.run_number }}-${{ github.run_id }}
 
       - name: Build and push httpd
         uses: docker/build-push-action@v6
         with:
           context: ./http-server
           push: ${{ github.ref == 'refs/heads/main' }}
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-http:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-http:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/tp-devops-http:${{ github.run_number }}-${{ github.run_id }}
