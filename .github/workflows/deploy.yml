@@ -41,3 +41,4 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
             "cd ~/TPCICD && ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml"
+            
