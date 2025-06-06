@@ -1,7 +1,7 @@
 name: CD DevOps 2025
 
 on:
-  workflow_run:
+#  workflow_run:
   workflow_dispatch:
   #  workflows: ["CI devops 2025"]
  #   types:
