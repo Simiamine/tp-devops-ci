@@ -15,12 +15,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy with Ansible
+      - name: Setup SSH
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
-          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            cd ~/ansible && git pull origin main && ansible-playbook -i inventories/setup.yml install.yml
-          "
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud << 'EOF'
+            cd ~/TPCICD  # adapte si tu clones ailleurs
+            git pull origin main
+            ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml
+EOF

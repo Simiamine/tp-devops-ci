@@ -1,0 +1,15 @@
+---
+- name: Run PostgreSQL container
+  community.docker.docker_container:
+    name: database
+    image: simiamine/tp-devops-database:latest
+    state: started
+    restart_policy: always
+    env:
+      POSTGRES_DB: sampledb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+    networks:
+      - name: tp-devops-net
+  vars:
+    ansible_python_interpreter: /opt/docker_venv/bin/python

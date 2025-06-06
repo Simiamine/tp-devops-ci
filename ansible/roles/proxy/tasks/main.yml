@@ -1,0 +1,10 @@
+- name: Run proxy container with Apache
+  docker_container:
+    name: http
+    image: "{{ dockerhub_username }}/tp-devops-http:latest"
+    state: started
+    restart_policy: always
+    networks:
+      - name: tp-devops-net
+    ports:
+      - "80:80"

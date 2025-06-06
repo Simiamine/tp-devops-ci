@@ -1,0 +1,14 @@
+- name: Run backend API container
+  docker_container:
+    name: backend-api
+    image: "{{ dockerhub_username }}/tp-devops-simple-api:latest"
+    env:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://database:5432/sampledb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: pass
+    ports:
+      - "8080:8080"  # EXPOSITION DU PORT
+    networks:
+      - name: tp-devops-net
+    restart_policy: always
+    state: started
