@@ -15,14 +15,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup SSH and Deploy
+      - name: Setup SSH key
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
+
+      - name: Ensure Git and Ansible are installed
+        run: |
           ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            cd ~/TPCICD
-            git pull origin main
-            ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml
+            sudo apt-get update -y
+            sudo apt-get install -y git ansible
+          "
+
+      - name: Clone repository on remote if not exists
+        run: |
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
+            if [ ! -d ~/TPCICD/.git ]; then
+              git clone https://github.com/Simiamine/TPCICD.git ~/TPCICD
+            fi
+          "
+
+      - name: Pull latest changes from main
+        run: |
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
+            cd ~/TPCICD && git pull origin main
+          "
+
+      - name: Run Ansible playbook
+        run: |
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
+            cd ~/TPCICD && ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml
           "
