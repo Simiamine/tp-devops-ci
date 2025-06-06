@@ -1,7 +1,7 @@
 all:
   vars:
     ansible_user: admin
-    ansible_ssh_private_key_file: ~/.ssh/id_rsa
+    ansible_ssh_private_key_file: ~/id_rsa  # on fait référence à la clé déposée dans le HOME du user
   children:
     prod:
       hosts:

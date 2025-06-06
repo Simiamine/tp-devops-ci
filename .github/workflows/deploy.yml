@@ -2,9 +2,10 @@ name: CD DevOps 2025
 
 on:
   workflow_run:
-    workflows: ["CI devops 2025"]
-    types:
-      - completed
+  workflow_dispatch:
+  #  workflows: ["CI devops 2025"]
+ #   types:
+#      - completed
 
 jobs:
   deploy:
@@ -41,4 +42,3 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
             "cd ~/TPCICD && ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml"
-            
