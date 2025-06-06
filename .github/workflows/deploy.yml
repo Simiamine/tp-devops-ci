@@ -30,7 +30,7 @@ jobs:
       - name: Clone repository on remote if not exists
         run: |
           ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
-            "[ -d ~/TPCICD/.git ] || git clone git@github.com:Simiamine/TPCICD.git ~/TPCICD"
+            "[ -d ~/TPCICD/.git ] || git clone git@github.com:Simiamine/tp-devops-ci.git ~/TPCICD"
 
       - name: Pull latest changes from main
         run: |
