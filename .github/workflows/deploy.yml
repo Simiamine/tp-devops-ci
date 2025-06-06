@@ -22,29 +22,22 @@ jobs:
           echo "$SSH_PRIVATE_KEY" > id_rsa
           chmod 600 id_rsa
 
-      - name: Ensure Git and Ansible are installed
+      - name: Ensure Git and Ansible are installed on remote
         run: |
-          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            sudo apt-get update -y
-            sudo apt-get install -y git ansible
-          "
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
+            "sudo apt-get update -y && sudo apt-get install -y git ansible"
 
       - name: Clone repository on remote if not exists
         run: |
-          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            if [ ! -d ~/TPCICD/.git ]; then
-              git clone https://github.com/Simiamine/TPCICD.git ~/TPCICD
-            fi
-          "
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
+            "[ -d ~/TPCICD/.git ] || git clone git@github.com:Simiamine/TPCICD.git ~/TPCICD"
 
       - name: Pull latest changes from main
         run: |
-          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            cd ~/TPCICD && git pull origin main
-          "
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
+            "cd ~/TPCICD && git pull origin main"
 
       - name: Run Ansible playbook
         run: |
-          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud "
-            cd ~/TPCICD && ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml
-          "
+          ssh -o StrictHostKeyChecking=no -i id_rsa admin@amine.m.zali.takima.cloud \
+            "cd ~/TPCICD && ansible-playbook -i ansible/inventories/setup.yml ansible/install.yml"
